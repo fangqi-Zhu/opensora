@@ -1,0 +1,344 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "train terminal model",
+      "type": "python",
+      "request": "launch",
+      "program": "/usr/local/bin/torchrun",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--standalone",
+        "--nproc_per_node",
+        "1",
+        "opensora/datasets/success_classifier_vit_v1_3.py",
+        "--pattern",
+        "/mnt/hdfs/zhufangqi/datasets/simplevla_rl/webdataset_shards/06/17_mp/**/*.tar",
+      ],
+      "env": {
+        // "TENSORNVME_DEBUG": "1"
+        "CUDA_VISIBLE_DEVICES": "0",
+        "WANDB_API_KEY": "1ffba3f6afe0d59ce6267833cd36a695f3719b25"
+      },
+    },
+    {
+      "name": "eval terminal model",
+      "type": "python",
+      "request": "launch",
+      "program": "/usr/local/bin/torchrun",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--standalone",
+        "--nproc_per_node",
+        "1",
+        "scripts/inference_videomae.py",
+      ],
+      "env": {
+        // "TENSORNVME_DEBUG": "1"
+        "WANDB_API_KEY": "1ffba3f6afe0d59ce6267833cd36a695f3719b25"
+      },
+    },
+    {
+      "name": "libero web training",
+      "type": "python",
+      "request": "launch",
+      "program": "/usr/local/bin/torchrun",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--standalone",
+        "--nproc_per_node",
+        "1",
+        "scripts/train_web.py",
+        "configs/libero/train/sdxl_simplevla_web.py",
+        // "--ckpt-path",
+        // "/mnt/hdfs/zhufangqi/pretrained_models/hpcai-tech/OpenSora-STDiT-v3/model.safetensors",
+        // "--load",
+        // "/mnt/hdfs/zhufangqi/checkpoints/opensora/libero/02/03/2_8/000-STDiT3-XL-2/epoch188-global_step200000"
+      ],
+      "env": {
+        // "TENSORNVME_DEBUG": "1"
+        "CUDA_VISIBLE_DEVICES": "0",
+        "WANDB_API_KEY": "1ffba3f6afe0d59ce6267833cd36a695f3719b25"
+      },
+    },
+    {
+      "name": "Python Debugger: Current File",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Real PushT: Training",
+      "type": "python",
+      "request": "launch",
+      "program": "/mnt/bn/zhufangqi-lq-c2ec0f30/zhufangqi/miniconda3/envs/opensora/bin/torchrun",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--standalone",
+        "--nproc_per_node",
+        "1",
+        "scripts/train.py",
+        "configs/realpusht/train/stage1_A100.py",
+        "--ckpt-path",
+        "/mnt/bn/zhufangqi-lq-c2ec0f30/zhufangqi/world-model/Open-Sora/pretrained_models/hpcai-tech/OpenSora-STDiT-v3/model.safetensors",
+      ],
+      "env": {
+        // "TENSORNVME_DEBUG": "1"
+        "CUDA_VISIBLE_DEVICES": "0",
+        "WANDB_API_KEY": "1ffba3f6afe0d59ce6267833cd36a695f3719b25"
+      },
+    },
+    {
+      "name": "Training VAE",
+      "type": "python",
+      "request": "launch",
+      "program": "/usr/local/bin/torchrun",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--nnodes=1",
+        "--nproc_per_node=8",
+        "scripts/train_vae.py",
+        "configs/vae/train/mbrl.py",
+        "--data-path",
+        "YOUR_CSV_PATH"
+      ]
+    },
+    {
+      "name": "Python: Current File",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Python: Saving Data To CSV",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "video",
+        "/mnt/bn/zhufangqi-lq-c2ec0f30/zhufangqi/world-model/data_preprocessing/data/rt1_100",
+        "--output",
+        "rt1_100.csv"
+      ]
+    },
+    {
+      "name": "PushT: Training",
+      "type": "python",
+      "request": "launch",
+      "program": "/usr/local/bin/torchrun",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--standalone",
+        "--nproc_per_node",
+        "1",
+        "scripts/train.py",
+        "configs/pusht/train/stage1_debug.py",
+        "--ckpt-path",
+        "/mnt/hdfs/zhufangqi/pretrained_models/hpcai-tech/OpenSora-STDiT-v3/model.safetensors",
+      ],
+      "env": {
+        // "TENSORNVME_DEBUG": "1"
+        "CUDA_VISIBLE_DEVICES": "3",
+        "WANDB_API_KEY": "1ffba3f6afe0d59ce6267833cd36a695f3719b25"
+      },
+    },
+    {
+      "name": "Libero: Continue Training",
+      "type": "python",
+      "request": "launch",
+      "program": "/usr/local/bin/torchrun",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--standalone",
+        "--nproc_per_node",
+        "1",
+        "scripts/train.py",
+        "configs/libero/train/sdxl_continue.py",
+        // "--ckpt-path",
+        // "/mnt/hdfs/zhufangqi/pretrained_models/hpcai-tech/OpenSora-STDiT-v3/model.safetensors",
+        // "--load",
+        // "/mnt/hdfs/zhufangqi/checkpoints/opensora/libero/02/03/2_8/000-STDiT3-XL-2/epoch188-global_step200000"
+      ],
+      "env": {
+        // "TENSORNVME_DEBUG": "1"
+        "CUDA_VISIBLE_DEVICES": "0",
+        "WANDB_API_KEY": "1ffba3f6afe0d59ce6267833cd36a695f3719b25"
+      },
+    },
+    {
+      "name": "Libero: Cache Training",
+      "type": "python",
+      "request": "launch",
+      "program": "/mnt/bn/zhufangqi-lq-c2ec0f30/zhufangqi/miniconda3/envs/opensora/bin/torchrun",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--standalone",
+        "--nproc_per_node",
+        "1",
+        "scripts/train.py",
+        "configs/libero/train/cache_stage1.py",
+        "--data-path",
+        "/mnt/bn/zhufangqi-lq-c2ec0f30/zhufangqi/world-model/data_preprocessing/data/libero",
+        "--ckpt-path",
+        "./pretrained_models/hpcai-tech/OpenSora-STDiT-v3/model.safetensors"
+      ],
+      "env": {
+        // "TENSORNVME_DEBUG": "1"
+        "CUDA_VISIBLE_DEVICES": "6",
+        "WANDB_API_KEY": "1ffba3f6afe0d59ce6267833cd36a695f3719b25"
+      },
+    },
+    {
+      "name": "Python: Training",
+      "type": "python",
+      "request": "launch",
+      "program": "/mnt/bn/zhufangqi-lq-c2ec0f30/zhufangqi/miniconda3/envs/opensora/bin/torchrun",
+      "console": "integratedTerminal",
+      "justMyCode": true,
+      "args": [
+        "--standalone",
+        "--nproc_per_node",
+        "1",
+        "scripts/train.py",
+        "configs/rt1/train/stage1.py",
+        "--data-path",
+        "/mnt/bn/zhufangqi-lq-c2ec0f30/zhufangqi/world-model/data_preprocessing/data/rt1_100",
+        "--ckpt-path",
+        "./pretrained_models/hpcai-tech/OpenSora-STDiT-v3/model.safetensors"
+      ],
+      "env": {
+        // "TENSORNVME_DEBUG": "1"
+        "CUDA_VISIBLE_DEVICES": "1",
+        "WANDB_API_KEY": "1ffba3f6afe0d59ce6267833cd36a695f3719b25"
+      },
+    },
+    {
+      "name": "Server: RealPushT",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/realpusht_server.py",
+      "args": [
+        "configs/realpusht/inference/sample_realpusht.py"
+      ],
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Inference: Libero",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/inference_libero_continue.py",
+      "args": [
+        "configs/libero/inference/libero_sdxl_continue.py",
+        // "--prompt",
+        // "a beautiful waterfall",
+        //   "--layernorm-kernel", "False"
+      ],
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Inference: PushT",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/evaluate_pusht.py",
+      "args": [
+        "configs/pusht/inference/sample_pusht.py",
+        // "--prompt",
+        // "a beautiful waterfall",
+        //   "--layernorm-kernel", "False"
+      ],
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Inference: Libero Cache",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/inference_libero_cache.py",
+      "args": [
+        "configs/libero/inference/sample_libero_cache.py",
+        //   "--layernorm-kernel", "False"
+      ],
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Inference: RT1",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/inference_rt1.py",
+      "args": [
+        "configs/rt1/inference/sample_rt1.py",
+        "--prompt",
+        "a beautiful waterfall",
+        //   "--layernorm-kernel", "False"
+      ],
+      "env": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      },
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: Inference",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/inference.py",
+      "args": [
+        "configs/opensora-v1-2/inference/sample.py",
+        "--num-frames",
+        "32",
+        "--resolution",
+        "256",
+        "--aspect-ratio",
+        "1:1",
+        "--prompt",
+        "a beautiful waterfall",
+        //   "--layernorm-kernel", "False"
+      ],
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: Play Vae",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/play_vae.py",
+      "args": [
+        "configs/opensora-v1-2/inference/sample.py",
+        "--num-frames",
+        "32",
+        "--resolution",
+        "256",
+        "--aspect-ratio",
+        "1:1",
+        "--prompt",
+        "a beautiful waterfall",
+        //   "--layernorm-kernel", "False"
+      ],
+      "justMyCode": true,
+      "console": "integratedTerminal"
+    }
+  ]
+}
